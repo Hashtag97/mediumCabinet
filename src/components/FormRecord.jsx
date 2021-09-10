@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 const FormRecord = ({ time, id, onClose, doctor }) => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
-  const { token, idClinic, setTimes } = useContext(DataContext);
+  const { token, idClinic, setTimes, listClinicAndUrl } = useContext(DataContext);
   const [loading, setLoading] = useState(false);
   const [createdRecord, setCreatedRecord] = useState(null);
   const [errorFio, setErrorFio] = useState(false);
@@ -156,6 +156,11 @@ const FormRecord = ({ time, id, onClose, doctor }) => {
               color="primary"
               onClick={() => {
                 setTimes({ type: "CHANGE_TIME", id, date: moment(time) });
+                listClinicAndUrl.forEach(item => {
+                  if(item.IdClinic == idClinic){
+                    window.location = item.url
+                  }
+                })
                 onClose();
               }}
             >

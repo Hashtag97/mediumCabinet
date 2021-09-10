@@ -15,9 +15,14 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import { BrowserRouter, Switch } from "react-router-dom";
 
+
 const token = `Qaz741wsX741!12`;
 
 const idClinic = document.location.search.replace(/[?]/, "").split("&")[0];
+
+const stringData = String(document.scripts.listClinic.text.replace(/[\s]+/g, ' '))
+
+const listClinicAndUrl = JSON.parse(stringData).data
 
 export const DataContext = createContext({});
 
@@ -61,7 +66,7 @@ const App = () => {
       .catch(({message}) => {
       console.log(message)
       setError(true)
-      })   
+      })    
   }, []);
 
 
@@ -100,6 +105,7 @@ const App = () => {
               idClinic,
               setTimes,
               cabineties,
+              listClinicAndUrl,
             }}
           >
             <Container maxWidth="xl">

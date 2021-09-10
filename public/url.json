@@ -1,0 +1,19 @@
+{
+    "data" : [
+        {
+            "name" : "Митино",
+            "IdClinic":"1D6C2FF1B1D1C24",
+            "url" : "https://klinikaspini.ru/spasibo-za-zapis-mitino.html"
+        },
+        {
+            "name" : "Красногорск",
+            "IdClinic":"1D7A55AE9E1BC26",
+            "url" : "https://klinikaspini.ru/spasibo-za-zapis-krasnogorsk.html"
+        },
+        {
+            "name" : "ОктПоле",
+            "IdClinic":"1D7A55B0C90715E",
+            "url" : "https://klinikaspini.ru/spasibo-za-zapis-okt-pole.html"
+        }
+    ]
+}

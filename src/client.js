@@ -2,7 +2,7 @@ import Axios from "axios";
 import utils from "./utilities";
 
 const client = Axios.create({
-  baseURL: `http://176.36.70.134:6590`,
+  baseURL: `http://mediumapi.mismedium.com.ua:6590`,
   responseType: "stream",
 });
 

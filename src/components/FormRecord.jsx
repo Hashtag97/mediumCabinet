@@ -84,7 +84,8 @@ const FormRecord = ({ time, id, onClose, doctor }) => {
   };
 
   const created = () => {
-    if (!validator.isMobilePhone(payload.phone, "ru-RU")) {
+    const rex = RegExp(/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/);
+    if (!validator.isMobilePhone(payload.phone, "ru-RU") || rex.test(payload.phone)) {
       setErrorPhone(true);
       messageErrorPhone();
     } else {
@@ -96,12 +97,7 @@ const FormRecord = ({ time, id, onClose, doctor }) => {
     } else {
       setErrorFio(false);
     }
-    if (
-      _.every([
-        validator.isMobilePhone(payload.phone, "ru-RU"),
-        validator.isLength(payload.fio, { min: 5 }),
-      ])
-    ) {
+    if (_.every([validator.isMobilePhone(payload.phone, "ru-RU"), validator.isLength(payload.fio, { min: 5 })])) {
       setLoading(true);
       client
         .setCreatedRecord(payload.fio, time, token, idClinic, id, payload.phone)
@@ -133,22 +129,17 @@ const FormRecord = ({ time, id, onClose, doctor }) => {
       onClose={onClose}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
-      maxWidth = "xs"
+      maxWidth="xs"
     >
       {loading ? (
         <Backdrop className={classes.backdrop} open={onClose}>
           <CircularProgress color="inherit" />
         </Backdrop>
-      ) : errorCreatedRecord === true &&
-        createdRecord !== null &&
-        time !== null ? (
+      ) : errorCreatedRecord === true && createdRecord !== null && time !== null ? (
         <>
           <DialogTitle id="alert-dialog-title">Произошла ошибка</DialogTitle>
           <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              Что-то пошло не так пока мы записывали вас к врачу попробуйте ещё
-              раз...
-            </DialogContentText>
+            <DialogContentText id="alert-dialog-description">Что-то пошло не так пока мы записывали вас к врачу попробуйте ещё раз...</DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button
@@ -156,11 +147,6 @@ const FormRecord = ({ time, id, onClose, doctor }) => {
               color="primary"
               onClick={() => {
                 setTimes({ type: "CHANGE_TIME", id, date: moment(time) });
-                listClinicAndUrl.forEach(item => {
-                  if(item.IdClinic == idClinic){
-                    window.location = item.url
-                  }
-                })
                 onClose();
               }}
             >
@@ -168,21 +154,16 @@ const FormRecord = ({ time, id, onClose, doctor }) => {
             </Button>
           </DialogActions>
         </>
-      ) : errorCreatedRecord === false &&
-        createdRecord !== null &&
-        time !== null ? (
+      ) : errorCreatedRecord === false && createdRecord !== null && time !== null ? (
         <>
-          <DialogTitle id="alert-dialog-title">
-            Вы записались на приём
-          </DialogTitle>
+          <DialogTitle id="alert-dialog-title">Вы записались на приём</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               <b>Информация о приёме</b>
               <br />
               <b>Кабинет:</b> {doctor}
               <br />
-              <b>Время:</b>{" "}
-              {moment(time).format("DD:MM:YYYY [В] HH:mm")}
+              <b>Время:</b> {moment(time).format("DD:MM:YYYY [В] HH:mm")}
               <br />
               <b>Пациент:</b> {payload.fio}
               <br />
@@ -195,6 +176,11 @@ const FormRecord = ({ time, id, onClose, doctor }) => {
                 color="primary"
                 onClick={() => {
                   setTimes({ type: "CHANGE_TIME", id, date: moment(time) });
+                  listClinicAndUrl.forEach((item) => {
+                    if (item.IdClinic == idClinic) {
+                      window.location = item.url;
+                    }
+                  });
                   onClose();
                 }}
               >
@@ -210,56 +196,28 @@ const FormRecord = ({ time, id, onClose, doctor }) => {
             <DialogContentText id="alert-dialog-description">
               <b>Кабинет:</b> {doctor}
               <br />
-              <b>Время:</b>{" "}
-              {moment(time).format("DD:MM:YYYY [В] HH:mm")}
+              <b>Время:</b> {moment(time).format("DD:MM:YYYY [В] HH:mm")}
               <br />
             </DialogContentText>
             <Grid container spacing={1}>
               <Grid item>
-                <FormControl
-                  error={errorFio}
-                  margin={"dense"}
-                  required={true}
-                  size={"medium"}
-                  fullWidth={true}
-                >
+                <FormControl error={errorFio} margin={"dense"} required={true} size={"medium"} fullWidth={true}>
                   <InputLabel htmlFor="fio">ФИО</InputLabel>
                   <Input
                     id="fio"
                     aria-describedby="fio-helper-text"
                     value={payload.fio}
-                    onChange={({ target: { value } }) =>
-                      setPayload({ ...payload, fio: value })
-                    }
+                    onChange={({ target: { value } }) => setPayload({ ...payload, fio: value })}
                   />
-                  <FormHelperText id="fio-helper-text">
-                    Введите ФИО пациента
-                  </FormHelperText>
+                  <FormHelperText id="fio-helper-text">Введите ФИО пациента</FormHelperText>
                 </FormControl>
-                <FormControl
-                  id="phone-helper-text"
-                  error={errorPhone}
-                  margin={"dense"}
-                  required={true}
-                  size={"medium"}
-                  fullWidth={true}
-                >
+                <FormControl id="phone-helper-text" error={errorPhone} margin={"dense"} required={true} size={"medium"} fullWidth={true}>
                   <InputLabel htmlFor="phone">Телефон</InputLabel>
-                  <Input
-                    value={payload.phone}
-                    onChange={({ target: { value } }) =>
-                      setPayload({ ...payload, phone: value })
-                    }
-                    name="tel"
-                    label="Телефон"
-                  />
-                  <FormHelperText id="phone-helper-text">
-                    Введите номер обратной связи
-                  </FormHelperText>
+                  <Input value={payload.phone} onChange={({ target: { value } }) => setPayload({ ...payload, phone: value })} name="tel" label="Телефон" />
+                  <FormHelperText id="phone-helper-text">Введите номер обратной связи</FormHelperText>
                 </FormControl>
               </Grid>
             </Grid>
-            
           </DialogContent>
           <DialogActions>
             <Button

@@ -85,7 +85,7 @@ const FormRecord = ({ time, id, onClose, doctor }) => {
 
   const created = () => {
     const rex = RegExp(/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/);
-    if (!validator.isMobilePhone(payload.phone, "ru-RU") || rex.test(payload.phone)) {
+    if (!rex.test(payload.phone)) {
       setErrorPhone(true);
       messageErrorPhone();
     } else {
@@ -97,7 +97,7 @@ const FormRecord = ({ time, id, onClose, doctor }) => {
     } else {
       setErrorFio(false);
     }
-    if (_.every([validator.isMobilePhone(payload.phone, "ru-RU"), validator.isLength(payload.fio, { min: 5 })])) {
+    if (_.every([rex.test(payload.phone), validator.isLength(payload.fio, { min: 5 })])) {
       setLoading(true);
       client
         .setCreatedRecord(payload.fio, time, token, idClinic, id, payload.phone)

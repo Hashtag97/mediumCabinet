@@ -5,16 +5,14 @@
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
+    <meta name="description" content="Web site created using create-react-app" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -26,26 +24,28 @@
     -->
     <title>Запись к врачу</title>
     <script id="listClinic">
-      {
-        "data" : [
         {
-            "name" : "Митино",
-            "IdClinic":"1D6C2FF1B1D1C24",
-            "url" : "https://klinikaspini.ru/spasibo-za-zapis-mitino.html"
-        },
-        {
-            "name" : "Красногорск",
-            "IdClinic":"1D7A55AE9E1BC26",
-            "url" : "https://klinikaspini.ru/spasibo-za-zapis-krasnogorsk.html"
-        },
-        {
-            "name" : "ОктПоле",
-            "IdClinic":"1D7A55B0C90715E",
-            "url" : "https://klinikaspini.ru/spasibo-za-zapis-okt-pole.html"
-        }
-      ]
-    }
-    
+          "data" : [
+          {
+              "name" : "Митино",
+              "IdClinic":"1D6C2FF1B1D1C24",
+              "url" : "https://klinikaspini.ru/spasibo-za-zapis-mitino.html",
+              "email" : ""
+          },
+          {
+              "name" : "Красногорск",
+              "IdClinic":"1D7A55AE9E1BC26",
+              "url" : "https://klinikaspini.ru/spasibo-za-zapis-krasnogorsk.html",
+              "email" : ""
+          },
+          {
+              "name" : "ОктПоле",
+              "IdClinic":"1D7A55B0C90715E",
+              "url" : "https://klinikaspini.ru/spasibo-za-zapis-okt-pole.html",
+              "email" : ""
+          }
+        ]
+      }
     </script>
   </head>
   <style>
@@ -67,5 +67,4 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
   </body>
-  
 </html>

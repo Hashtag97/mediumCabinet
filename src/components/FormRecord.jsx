@@ -120,6 +120,21 @@ const FormRecord = ({ time, id, onClose, doctor }) => {
     }
   };
 
+  const sendEmail = (to, name) => {
+    Email.send({
+      Host: "smtp.yourisp.com",
+      Username: "e.zapismedium.gmail.com",
+      Password: "wAbi_9.6!Qwymhk",
+      To: to,
+      From: "e.zapismedium.gmail.com",
+      Subject: "Онлайн запись",
+      Body: `Центр: ${name}; 
+      Дата, время: ${moment(time).format("DD:MM:YYYY [В] HH:mm")}; 
+      ФИО: ${payload.fio}; 
+      Телефон: ${payload.phone} `,
+    }).then((message) => console.log(message));
+  };
+
   return (
     <Dialog
       disableBackdropClick
@@ -171,6 +186,18 @@ const FormRecord = ({ time, id, onClose, doctor }) => {
               <br />
             </DialogContentText>
             <DialogActions>
+              {listClinicAndUrl.forEach((item) => {
+                if (item.IdClinic == idClinic) {
+                  if (item.email != "" && item.email != undefined) sendEmail(item.email, item.name);
+                }
+              })}
+              {setTimeout(function () {
+                listClinicAndUrl.forEach((item) => {
+                  if (item.IdClinic == idClinic) {
+                    window.location = item.url;
+                  }
+                });
+              }, 5000)}
               <Button
                 autoFocus
                 color="primary"

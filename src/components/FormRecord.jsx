@@ -18,12 +18,9 @@ import _ from "lodash";
 import validator from "validator";
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
-import React, { memo, useContext, useState } from "react";
+import React, { memo, useContext, useState, useEffect } from "react";
 import client from "../client";
 import { DataContext } from "../App";
-import sgMail from "@sendgrid/mail";
-
-sgMail.setApiKey("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");
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -123,38 +120,17 @@ const FormRecord = ({ time, id, onClose, doctor }) => {
     }
   };
 
-  const sendEmail = (to, name) => {
-    const msg = {
-      to: to,
-      from: to,
-      subject: "Онлайн запись",
-      text: "Информация об записи пациента",
-      html: `
-      <b>Информация о приёме</b>
-      <br />
-      <b>Центр:</b> ${name}
-      <br />
-      <b>Дата, время:</b> ${moment(time).format("DD:MM:YYYY [В] HH:mm")}
-      <br />
-      <b>ФИО:</b> ${payload.fio}
-      <br />
-      <b>Телефон:</b> ${payload.phone}
-      <br />`,
-    };
-
-    sgMail.send(msg).then(
-      (response) => {
-        console.log(response);
-      },
-      (error) => {
-        console.error(error);
-
-        if (error.response) {
-          console.error(error.response.body);
+  useEffect(() => {
+    if (errorCreatedRecord === false && createdRecord !== null && time !== null) {
+      listClinicAndUrl.forEach((item) => {
+        if (item.IdClinic == idClinic) {
+          setTimeout(function () {
+            window.location = item.url;
+          }, 5000);
         }
-      }
-    );
-  };
+      });
+    }
+  }, [createdRecord]);
 
   return (
     <Dialog
@@ -207,18 +183,6 @@ const FormRecord = ({ time, id, onClose, doctor }) => {
               <br />
             </DialogContentText>
             <DialogActions>
-              {listClinicAndUrl.forEach((item) => {
-                if (item.IdClinic == idClinic) {
-                  if (item.email != "" && item.email != undefined) sendEmail(item.email, item.name);
-                }
-              })}
-              {setTimeout(function () {
-                listClinicAndUrl.forEach((item) => {
-                  if (item.IdClinic == idClinic) {
-                    window.location = item.url;
-                  }
-                });
-              }, 5000)}
               <Button
                 autoFocus
                 color="primary"

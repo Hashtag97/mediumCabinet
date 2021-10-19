@@ -21,6 +21,9 @@ import moment from "moment";
 import React, { memo, useContext, useState } from "react";
 import client from "../client";
 import { DataContext } from "../App";
+import sgMail from "@sendgrid/mail";
+
+sgMail.setApiKey("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");
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -121,18 +124,36 @@ const FormRecord = ({ time, id, onClose, doctor }) => {
   };
 
   const sendEmail = (to, name) => {
-    Email.send({
-      Host: "smtp.yourisp.com",
-      Username: "e.zapismedium.gmail.com",
-      Password: "wAbi_9.6!Qwymhk",
-      To: to,
-      From: "e.zapismedium.gmail.com",
-      Subject: "Онлайн запись",
-      Body: `Центр: ${name}; 
-      Дата, время: ${moment(time).format("DD:MM:YYYY [В] HH:mm")}; 
-      ФИО: ${payload.fio}; 
-      Телефон: ${payload.phone} `,
-    }).then((message) => console.log(message));
+    const msg = {
+      to: to,
+      from: to,
+      subject: "Онлайн запись",
+      text: "Информация об записи пациента",
+      html: `
+      <b>Информация о приёме</b>
+      <br />
+      <b>Центр:</b> ${name}
+      <br />
+      <b>Дата, время:</b> ${moment(time).format("DD:MM:YYYY [В] HH:mm")}
+      <br />
+      <b>ФИО:</b> ${payload.fio}
+      <br />
+      <b>Телефон:</b> ${payload.phone}
+      <br />`,
+    };
+
+    sgMail.send(msg).then(
+      (response) => {
+        console.log(response);
+      },
+      (error) => {
+        console.error(error);
+
+        if (error.response) {
+          console.error(error.response.body);
+        }
+      }
+    );
   };
 
   return (
